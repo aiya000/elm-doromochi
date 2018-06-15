@@ -17,7 +17,8 @@
     "build": "webpack",
     "watch": "webpack --watch",
     "start": "webpack-dev-server --port 3000",
-    "test": "elm-test"
+    "test": "elm-test",
+    "ctags": "ctags --tag-relative=yes --recurse --sort=yes --exclude=node_modules -f .git/tags"
   },
   "devDependencies": {
     "webpack-cli": "^2.0.10",

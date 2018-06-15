@@ -10,6 +10,10 @@ WIP
 # :grey_exclamation: Requirements :grey_exclamation:
 WIP
 
+- optional
+    - ctags & [ctags elm mapping](https://stackoverflow.com/questions/46191128/how-can-i-use-ctags-with-multiple-elm-projects)
+      (if use `npm run ctags`)
+
 # :clipboard: Copyrights :clipboard:
 ## Images
 [The images](resources/images)'s copyright
