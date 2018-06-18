@@ -36,11 +36,7 @@ type alias Model =
 
 init : ( Model, Cmd Msg )
 init =
-    let
-        model =
-            { clock = 0, timerState = TimerStop }
-    in
-        ( model, Cmd.none )
+    { clock = 0, timerState = TimerStop } ! [ Cmd.none ]
 
 
 type Msg
@@ -52,20 +48,20 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         TimerAction TimerStart ->
-            ( { model | timerState = TimerStart }, Cmd.none )
+            { model | timerState = TimerStart } ! [ Cmd.none ]
 
         TimerAction TimerReset ->
-            let
-                model_ =
-                    { model | clock = 0 }
-            in
-                ( { model_ | timerState = TimerStop }, Cmd.none )
+            { model
+                | clock = 0
+                , timerState = TimerStop
+            }
+                ! [ Cmd.none ]
 
         TimerAction TimerStop ->
-            ( { model | timerState = TimerStop }, Cmd.none )
+            { model | timerState = TimerStop } ! [ Cmd.none ]
 
         TimerCountUp time ->
-            ( { model | clock = time }, Cmd.none )
+            { model | clock = time } ! [ Cmd.none ]
 
 
 view : Model -> Html Msg
