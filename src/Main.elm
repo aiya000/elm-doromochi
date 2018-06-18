@@ -3,8 +3,35 @@ module Main exposing (..)
 import Html exposing (Html, div, text, img, button)
 import Html.Attributes exposing (src)
 import Html.Events exposing (onClick)
-import Time exposing (Time, every, second, inHours, inMinutes, inSeconds)
-import Time.Format exposing (format)
+import Time exposing (every, second)
+import Time.DateTime as DateTime exposing (DateTime, dateTime, addSeconds)
+import String exposing (toList, fromList)
+
+
+{-| Format a `DateTime` to like "02:33:06"
+("hours:minutes:second", two digits, zero padded)
+-}
+timeFormat : DateTime -> String
+timeFormat x =
+    let
+        hour =
+            DateTime.hour x |> toString
+
+        minute =
+            DateTime.minute x |> toString
+
+        second =
+            DateTime.second x |> toString
+
+        twoDigits x =
+            case toList x of
+                x :: [] ->
+                    fromList [ '0', x ]
+
+                _ ->
+                    x
+    in
+        twoDigits hour ++ ":" ++ twoDigits minute ++ ":" ++ twoDigits second
 
 
 {-| Mean both a Model's state and a Msg.
@@ -29,19 +56,22 @@ type TimerStep
 
 -}
 type alias Model =
-    { clock : Time
+    { clock : DateTime
     , timerState : TimerStep
     }
 
 
 init : ( Model, Cmd Msg )
 init =
-    { clock = 0, timerState = TimerStop } ! [ Cmd.none ]
+    { clock = dateTime DateTime.zero
+    , timerState = TimerStop
+    }
+        ! [ Cmd.none ]
 
 
 type Msg
     = TimerAction TimerStep
-    | TimerCountUp Time
+    | TimerCountUp DateTime
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -52,7 +82,7 @@ update msg model =
 
         TimerAction TimerReset ->
             { model
-                | clock = 0
+                | clock = dateTime DateTime.zero
                 , timerState = TimerStop
             }
                 ! [ Cmd.none ]
@@ -68,7 +98,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ img [ src "./src/images/rest.png" ] []
-        , div [] [ text <| format "%H:%M:%S" model.clock ]
+        , div [] [ text <| timeFormat model.clock ]
         , div []
             [ button [ onClick <| TimerAction TimerStart ] [ text "Start" ]
             , button [ onClick <| TimerAction TimerStop ] [ text "Stop" ]
@@ -87,7 +117,7 @@ subscriptions model =
             Sub.none
 
         TimerStart ->
-            every second <| always <| TimerCountUp <| model.clock + second
+            every second <| always <| TimerCountUp <| addSeconds 1 model.clock
 
 
 main : Program Never Model Msg
