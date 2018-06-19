@@ -25,8 +25,8 @@ timeFormat x =
 
         twoDigits x =
             case toList x of
-                x :: [] ->
-                    fromList [ '0', x ]
+                z :: [] ->
+                    fromList [ '0', z ]
 
                 _ ->
                     x
