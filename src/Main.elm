@@ -1,7 +1,7 @@
 module Main exposing (..)
 
 import Html exposing (Html, div, text, img, button)
-import Html.Attributes exposing (src)
+import Html.Attributes exposing (src, alt, id)
 import Html.Events exposing (onClick)
 import Time exposing (every, second)
 import Time.DateTime as DateTime exposing (DateTime, dateTime, addSeconds)
@@ -97,12 +97,12 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ img [ src "./src/images/rest.png" ] []
-        , div [] [ text <| timeFormat model.clock ]
+        [ img [ src "./src/images/rest.png", alt "zunko", id "zunko" ] []
+        , div [ id "clock" ] [ text <| timeFormat model.clock ]
         , div []
-            [ button [ onClick <| TimerAction TimerStart ] [ text "Start" ]
-            , button [ onClick <| TimerAction TimerStop ] [ text "Stop" ]
-            , button [ onClick <| TimerAction TimerReset ] [ text "Reset" ]
+            [ button [ onClick <| TimerAction TimerStart, id "start_button" ] [ text "Start" ]
+            , button [ onClick <| TimerAction TimerStop, id "stop_button" ] [ text "Stop" ]
+            , button [ onClick <| TimerAction TimerReset, id "reset_button" ] [ text "Reset" ]
             ]
         ]
 
