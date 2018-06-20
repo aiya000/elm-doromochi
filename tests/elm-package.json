@@ -1,14 +1,15 @@
 {
     "version": "1.0.0",
     "summary": "Test Suites",
-    "repository": "https://github.com/user/project.git",
-    "license": "BSD3",
+    "repository": "https://github.com/aiya000/elm-doromochi.git",
+    "license": "MIT",
     "source-directories": [
         "../src",
         "."
     ],
     "exposed-modules": [],
     "dependencies": {
+        "Bogdanp/elm-time": "1.4.0 <= v < 2.0.0",
         "eeue56/elm-html-test": "5.1.1 <= v < 6.0.0",
         "elm-community/elm-test": "4.0.0 <= v < 5.0.0",
         "elm-lang/core": "5.1.1 <= v < 6.0.0",
