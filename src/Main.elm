@@ -3,9 +3,9 @@ module Main exposing (..)
 import Html exposing (Html, div, text, img, button)
 import Html.Attributes exposing (src, alt, id)
 import Html.Events exposing (onClick)
+import String exposing (toList, fromList)
 import Time exposing (every, second)
 import Time.DateTime as DateTime exposing (DateTime, dateTime, addSeconds)
-import String exposing (toList, fromList)
 
 
 {-| Format a `DateTime` to like "02:33:06"
@@ -69,9 +69,11 @@ init =
         ! [ Cmd.none ]
 
 
+{-| TimerCountUp increments `Model.clock` a second
+-}
 type Msg
     = TimerAction TimerStep
-    | TimerCountUp DateTime
+    | TimerCountUp
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -90,8 +92,8 @@ update msg model =
         TimerAction TimerStop ->
             { model | timerState = TimerStop } ! [ Cmd.none ]
 
-        TimerCountUp time ->
-            { model | clock = time } ! [ Cmd.none ]
+        TimerCountUp ->
+            { model | clock = addSeconds 1 model.clock } ! [ Cmd.none ]
 
 
 view : Model -> Html Msg
@@ -107,6 +109,8 @@ view model =
         ]
 
 
+{-| Increment a clock of `Model` at every seconds,
+-}
 subscriptions : Model -> Sub Msg
 subscriptions model =
     case model.timerState of
@@ -117,7 +121,7 @@ subscriptions model =
             Sub.none
 
         TimerStart ->
-            every second <| always <| TimerCountUp <| addSeconds 1 model.clock
+            every second <| always TimerCountUp
 
 
 main : Program Never Model Msg
